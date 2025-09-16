@@ -1,0 +1,3 @@
+[submodule "paymaster"]
+	path = paymaster
+	url = https://github.com/avnu-labs/paymaster.git

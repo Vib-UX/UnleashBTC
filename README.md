@@ -40,7 +40,7 @@ graph TB
 
     subgraph "Starknet Layer"
         AA[Account Abstraction]
-        Paymaster[USDC Paymaster]
+        Paymaster[AVNU & Cartridge Paymasters]
         Proxy[Bitcoin dApp Proxy]
     end
 
@@ -108,7 +108,7 @@ sequenceDiagram
     Mobile->>Atomiq: Bridge BTC via Lightning/on-chain
 
     Note over Atomiq: Reserve 2% for gas in USDC
-    Atomiq->>Paymaster: Deposit USDC reserve
+    Atomiq->>Paymaster: Deposit USDC reserve (AVNU/Cartridge)
     Atomiq->>Proxy: Bridge 98% as WBTC
 
     Mobile->>Proxy: Execute strategy deposit
@@ -123,9 +123,9 @@ sequenceDiagram
 
 ### Key Technologies
 
-- **Account Abstraction**: Starknet.js + ArgentX/Braavos smart accounts
+- **Account Abstraction**: Leverages Starknet's native account abstraction features
+- **Paymaster Support**: Gasless transactions via AVNU and Cartridge paymasters
 - **Cross-Chain**: Atomiq SDK with built-in Lightning support
-- **Gas Abstraction**: AVNU paymaster with USDC reserves
 - **Mobile**: React Native with @starknet-react/core
 - **Smart Contracts**: Cairo with Scarb and Foundry
 
@@ -143,16 +143,32 @@ const account = await deploy_account({
 await setup_recovery(account, [credential, email_backup, phone_backup]);
 ```
 
-#### 2. Gas Abstraction
+#### 2. Gas Abstraction & Paymaster Integration
 
 ```typescript
-// Invisible gas fees in USDC
+// Gasless transactions via AVNU and Cartridge paymasters
 const reserve_usdc = await convert_wbtc_to_usdc(user_wbtc * 0.02);
-const paymaster = await setup_paymaster({ token: "USDC" });
+
+// Initialize multiple paymaster options for redundancy
+const avnu_paymaster = await setup_paymaster({
+  provider: "AVNU",
+  token: "USDC",
+  gasless: true,
+});
+const cartridge_paymaster = await setup_paymaster({
+  provider: "Cartridge",
+  token: "USDC",
+  gasless: true,
+});
 
 const execute = async (operation) => {
-  await deduct_usdc(user, estimate_gas_usdc(operation.gas));
-  return paymaster.execute(operation);
+  // Try AVNU first, fallback to Cartridge if needed
+  try {
+    await deduct_usdc(user, estimate_gas_usdc(operation.gas));
+    return avnu_paymaster.execute(operation);
+  } catch (error) {
+    return cartridge_paymaster.execute(operation);
+  }
 };
 ```
 
@@ -266,11 +282,12 @@ npm run dev
 - **Real-time APY**: Live yield tracking across protocols
 - **Lightning Integration**: Instant deposits and withdrawals
 
-##  Security & Recovery
+## 🔐 Security & Recovery
 
 - **Social Recovery**: Multiple guardians (passkey, email, phone)
-- **Account Abstraction**: Smart account management
+- **Account Abstraction**: Leverages Starknet's native AA features
 - **Gas Optimization**: Automatic USDC reserve management
+- **Paymaster Redundancy**: Dual paymaster support (AVNU + Cartridge)
 - **Cross-chain Security**: Atomiq's proven bridge infrastructure
 
 ## Target Protocols

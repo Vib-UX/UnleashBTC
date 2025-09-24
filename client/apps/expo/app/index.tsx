@@ -1,6 +1,5 @@
-import HomeScreen from 'app/features/home/screen'
+import HomeScreen from 'app/features/home/screen2'
 import { Stack } from 'expo-router'
-import Providers from '../providers/starknet-providers'
 
 export default function Screen() {
   return (
@@ -10,10 +9,7 @@ export default function Screen() {
           title: 'Home',
         }}
       />
-
-      <Providers>
-        <HomeScreen />
-      </Providers>
+      <HomeScreen />
     </>
   )
 }

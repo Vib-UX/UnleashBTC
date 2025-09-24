@@ -14,13 +14,7 @@ export const availableConnectors = () => {
     // new InjectedConnector({ options: { id: 'argentX' } }),
     // new InjectedConnector({ options: { id: 'braavos' } }),
     // new ControllerConnector(),
-    ArgentMobileConnector.init({
-      options: {
-        url: 'exp://192.168.1.1:8081', // Replace with your Expo development server URL
-        dappName: 'Unleash BTC',
-        chainId: CHAIN_ID,
-      },
-    }),
+    ArgentMobileConnector.init({}),
   ].filter((connector) => connector !== null)
 }
 

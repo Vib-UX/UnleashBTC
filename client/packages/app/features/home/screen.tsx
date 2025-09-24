@@ -130,32 +130,24 @@
 
  
 import { XStack, YStack } from '@my/ui';
+import { connect, disconnect } from "@starknet-io/get-starknet";
 import {
-  Connector,
   useAccount,
-  useConnect,
-  useDisconnect,
+  useConnect
 } from '@starknet-react/core';
 import { Button } from 'react-native';
 import { StarknetkitConnector, useStarknetkitConnectModal } from 'starknetkit';
- 
+
 function WalletConnectorModal() {
-  const { disconnect } = useDisconnect();
  
-  const { connect, connectors ,error} = useConnect();
-  console.log("error", error);
+  const {  connectors ,error} = useConnect();
   const { starknetkitConnectModal } = useStarknetkitConnectModal({
     connectors: connectors as StarknetkitConnector[],
   });
  
   async function connectWallet() {
     try {
-      const { connector } = await starknetkitConnectModal();
-    console.log("connector", connector);
-    if (!connector) {
-      return;
-    }
-    await connect({ connector: connector as Connector });
+      connect()
     } catch (error) {
       console.log("error", error);
     }

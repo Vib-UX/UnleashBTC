@@ -1,5 +1,5 @@
-import HomeScreen from 'app/features/home/screen2'
 import { Stack } from 'expo-router'
+import { AppleSignInScreen } from './WalletScreen'
 
 export default function Screen() {
   return (
@@ -9,7 +9,7 @@ export default function Screen() {
           title: 'Home',
         }}
       />
-      <HomeScreen />
+      <AppleSignInScreen />
     </>
   )
 }

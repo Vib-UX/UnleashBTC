@@ -1,5 +1,5 @@
 {
-  "name": "starknet-ready-api",
+  "name": "privy-api",
   "version": "2.0.0",
   "description": "Express API for creating Privy wallets and deploying Ready accounts on Starknet (Sepolia)",
   "main": "dist/server.js",

@@ -1,5 +1,6 @@
 import PrivyUI from '@/components/login/PrivyUI'
 import { useCounter } from '@/hooks/useCounter'
+import { API_URL, CONTRACT_ADDRESS } from '@/utils/config'
 import {
   addressExplorerUrl,
   formatStarknetAddress,
@@ -39,13 +40,8 @@ export default function StarknetScreen() {
 
   const hasWallet = !!(walletId || walletAddress || publicKey)
   // Use your machine's IP address instead of localhost for mobile development
-  const baseApi =
-    'https://management-attraction-precisely-grain.trycloudflare.com' // Replace with your machine's IP address
-      .replace(/\/+$/, '')
-  const defaultCounterAddress =
-    process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ||
-    process.env.NEXT_PUBLIC_COUNTER_CONTRACT ||
-    ''
+  const baseApi = API_URL.replace(/\/+$/, '') // Replace with your machine's IP address
+  const defaultCounterAddress = CONTRACT_ADDRESS
   const [counterAddress] = useState<string>(defaultCounterAddress)
   const userAddressForCounter = formatStarknetAddress(walletAddress)
   const { data: counterData } = useCounter(
@@ -347,8 +343,10 @@ export default function StarknetScreen() {
           typeof getAccessToken === 'function'
             ? await getAccessToken()
             : undefined
-      } catch {}
-
+      } catch {
+        debugger
+      }
+      debugger
       if (!userJwt) {
         const msg =
           'Unable to retrieve user session. Please re-login and try again.'
@@ -374,7 +372,9 @@ export default function StarknetScreen() {
         }),
       })
 
+      console.log('resp', resp)
       const data = await resp.json().catch(() => ({}))
+      console.log('resp', data)
       if (!resp.ok) throw new Error(data?.error || 'Increase counter failed')
 
       const txHash: string | undefined = data?.transactionHash

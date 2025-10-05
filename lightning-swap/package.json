@@ -1,0 +1,32 @@
+{
+  "name": "@unleashbtc/lightning-swap",
+  "version": "1.0.0",
+  "description": "Lightning Network to Starknet swap integration using Atomiq Labs SDK",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest"
+  },
+  "keywords": [
+    "lightning",
+    "bitcoin",
+    "starknet",
+    "atomiq",
+    "swap",
+    "cross-chain"
+  ],
+  "author": "UnleashBTC Team",
+  "license": "MIT",
+  "dependencies": {
+    "@atomiqlabs/sdk": "^1.0.0",
+    "@atomiqlabs/chain-starknet": "^1.0.0",
+    "starknet": "^8.5.3",
+    "get-starknet": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.6",
+    "typescript": "^5.7.2"
+  }
+}
